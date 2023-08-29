@@ -16,6 +16,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->command('facelec:sincronizar')->hourly();
+        $schedule->command('facelec:generar')->hourlyAt(5);
+        $schedule->command('facelec:firmar')->hourlyAt(10);
+        $schedule->command('facelec:enviar')->hourlyAt(15);
+        $schedule->command('facelec:autorizados')->hourlyAt(25);
+        $schedule->command('facelec:correo')->hourlyAt(35);
     }
 
     /**

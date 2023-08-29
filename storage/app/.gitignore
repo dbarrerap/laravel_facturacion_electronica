@@ -1,3 +1,7 @@
 *
 !public/
+!comprobantes/
+!comprobantes/generados/
+!comprobantes/firmados/
+!comprobantes/autorizados/
 !.gitignore
