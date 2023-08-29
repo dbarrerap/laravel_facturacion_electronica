@@ -71,7 +71,7 @@ class FacturaMail extends Mailable
     public function attachments()
     {
         return [
-            Attachment::fromStorage('app/comprobantes/autorizados/' . $this->content[0])->as($this->factura_autorizacion . '.xml')->withMime('application/xml'),
+            Attachment::fromPath(storage_path('app/comprobantes/autorizados/') . $this->content[0])->as($this->factura_autorizacion . '.xml')->withMime('application/xml'),
             // Attachment::fromData(fn () => $this->content[1], $this->factura_autorizacion . '.pdf')->withMime('application/pdf'),,
         ];
     }
