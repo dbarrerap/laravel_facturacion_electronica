@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\FacturaElectronica;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class FacElecFirmar extends Command
@@ -35,6 +36,10 @@ class FacElecFirmar extends Command
             try {
                 $url = "java -jar " . storage_path('app/firmador/FirmaElectronica.jar') . " " . storage_path('app/firmador/certificado.p12') . " " . env('CLAVE_CERTIFICADO') . " " . storage_path('app/comprobantes/generados/') . $documento['clave_acceso'] . ".xml " . storage_path('app/comprobantes/firmados/') . " " . $documento['clave_acceso'] . ".xml";
                 exec($url, $o);
+
+                foreach($o as $line) {
+                    Log::info($line);
+                }
 
                 if (Str::startsWith($o[count($o) - 1], 'Error')) {
                     throw new \Exception($o[count($o) - 1]);
