@@ -48,7 +48,7 @@ class FacElecFirmar extends Command
                 FacturaElectronica::where(['clave_acceso' => $documento['clave_acceso']])->update($datosAct);
             } catch (\Exception $ex) {
                 $datosAct = [
-                    'mensaje_error' => 'FirmarXML: Error al generar al firmar XML (' . $ex->getMessage() . ')',
+                    'mensaje_error' => 'FirmarXML: Error al firmar XML (' . $ex->getMessage() . ')',
                 ];
                 FacturaElectronica::where(['clave_acceso' => $documento['clave_acceso']])->update($datosAct);
             }
