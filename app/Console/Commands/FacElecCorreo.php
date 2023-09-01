@@ -58,11 +58,13 @@ class FacElecCorreo extends Command
                     'estado' => 'X',
                     'observaciones' => 'Correo enviado a Cliente',
                     'mensaje_error' => null,
+                    'identificador' => null,
                 ];
                 FacturaElectronica::where(['clave_acceso' => $autorizado['clave_acceso']])->update($datosAct);
                 //
             } catch (\Exception $ex) {
                 $datosAct = [
+                    'identificador' => null,
                     'mensaje_error' => 'EnviarCorreoXML: Error enviando correo (' . $ex->getMessage() . ')',
                 ];
                 FacturaElectronica::where(['clave_acceso' => $autorizado['clave_acceso']])->update($datosAct);

@@ -102,6 +102,7 @@ class FacElecAutorizados extends Command
                             'observaciones' => 'Se Autorizo el comprobante correctamente',
                             'fecha_autorizacion' => $fechaAutorizacion,
                             'clave_autorizacion' => $autorizacionNodo->autorizacion->numeroAutorizacion,
+                            'identificador' => null,
                             'mensaje_error' => null,
                         ];
                         FacturaElectronica::where(['clave_acceso' => $recibido['clave_acceso']])->update($datosAct);
@@ -121,6 +122,7 @@ class FacElecAutorizados extends Command
                     }
                 } else {
                     $datosAct = [
+                        'identificador' => null,
                         'mensaje_error' => 'AutorizacionXML: Respuesta vacia'
                     ];
                     FacturaElectronica::where(['clave_acceso' => $recibido['clave_acceso']])->update($datosAct);
@@ -128,6 +130,7 @@ class FacElecAutorizados extends Command
                 //
             } catch (\Exception $ex) {
                 $datosAct = [
+                    'identificador' => null,
                     'mensaje_error' => 'AutorizacionXML: Error al confirmar autorizacion de XML (' . $ex->getMessage() . ')'
                 ];
                 FacturaElectronica::where(['clave_acceso' => $recibido['clave_acceso']])->update($datosAct);

@@ -34,11 +34,11 @@ class FacElecEnviar extends Command
         $firmados = FacturaElectronica::where('estado', '=', 'F')->get();
         $bar = $this->output->createProgressBar(count($firmados));
 
-        foreach($firmados as $firmado) {
+        foreach ($firmados as $firmado) {
             try {
                 $archivo = Storage::get('comprobantes/firmados/' . $firmado['clave_acceso'] . '.xml');
                 // $archivo = base64_encode($archivo);
-                
+
                 $xml = array('xml' => $archivo);
                 $url = 'https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl';  // PRUEBAS
                 // $url = 'https://cel.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl'; // PRODUCCION
@@ -54,24 +54,34 @@ class FacElecEnviar extends Command
                     FacturaElectronica::where(['clave_acceso' => $firmado['clave_acceso']])->update($datosAct);
                 } else {
                     $identificador = $result->RespuestaRecepcionComprobante->comprobantes->comprobante->mensajes->mensaje->identificador;
-
                     $mensajeError = TipoErrores::where([
                         'identificador' => $identificador,
                         'tipo' => 'RECEPCION'
                     ])->first();
-                    
-                    $datosAct = [
-                        'identificador' => $identificador,
-                        'mensaje_error' => $identificador . " => " . $mensajeError->descripcion,
-                    ];
+
+                    if ($identificador == 43) {
+                        $datosAct = [
+                            'estado' => 'R',
+                            'identificador' => null,
+                            'observaciones' => 'El comprobante electrónico se envió correctamente a recepcion del SRI',
+                            'mensaje_error' => $mensajeError
+                        ];
+                    } else {
+
+                        $datosAct = [
+                            'identificador' => $identificador,
+                            'mensaje_error' => $identificador . " => " . $mensajeError->descripcion,
+                        ];
+                    }
                     FacturaElectronica::where(['clave_acceso' => $firmado['clave_acceso']])->update($datosAct);
                 }
             } catch (\Exception $ex) {
                 $datosAct = [
+                    'identificador' => null,
                     'mensaje_error' => 'EnviarXML: Error al enviar XML (' . $ex->getMessage() . ')',
                 ];
                 FacturaElectronica::where('clave_acceso', '=', $firmado['clave_acceso'])->update($datosAct);
-            } 
+            }
             $bar->advance();
         }
         $bar->finish();
