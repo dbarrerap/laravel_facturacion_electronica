@@ -59,6 +59,11 @@ class FacElecEnviar extends Command
                         'tipo' => 'RECEPCION'
                     ])->first();
 
+                    $informacionAdicional = "Sin informacion adicional.";
+                    if (isset($result->RespuestaRecepcionComprobante->comprobantes->comprobante->mensajes->mensaje->informacionAdicional)) {
+                        $informacionAdicional = $result->RespuestaRecepcionComprobante->comprobantes->comprobante->mensajes->mensaje->informacionAdicional;
+                    }
+
                     if ($identificador == 43) {
                         $datosAct = [
                             'estado' => 'R',
@@ -70,7 +75,7 @@ class FacElecEnviar extends Command
 
                         $datosAct = [
                             'identificador' => $identificador,
-                            'mensaje_error' => $identificador . " => " . $mensajeError->descripcion,
+                            'mensaje_error' => $mensajeError->descripcion . "(" . $informacionAdicional . ")",
                         ];
                     }
                     FacturaElectronica::where(['clave_acceso' => $firmado['clave_acceso']])->update($datosAct);

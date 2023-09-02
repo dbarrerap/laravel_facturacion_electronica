@@ -33,7 +33,6 @@ class FacElecSincronizar extends Command
         $empresa = Empresa::where('id', 1)->first();
         $facturas_qb = Factura::with('pos_settings')->where('note', '');
         $facturas = $facturas_qb->get();
-        $facturas_qb->update(['note' => 'FacElec Generado']);
 
         $bar = $this->output->createProgressBar(count($facturas));
 
@@ -63,6 +62,8 @@ class FacElecSincronizar extends Command
             $bar->advance();
         }
         $bar->finish();
+        $facturas_qb->update(['note' => 'FacElec Generado']);
+        
         return Command::SUCCESS;
     }
 
