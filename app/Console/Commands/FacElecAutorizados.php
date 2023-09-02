@@ -31,7 +31,7 @@ class FacElecAutorizados extends Command
      */
     public function handle()
     {
-        $recibidos = FacturaElectronica::where('estado', '=', 'R')->get();
+        $recibidos = FacturaElectronica::where('estado', '=', 'R')->whereNull('identificador')->get();
         $bar = $this->output->createProgressBar(count($recibidos));
 
         foreach($recibidos as $recibido) {
@@ -114,9 +114,14 @@ class FacElecAutorizados extends Command
                             'tipo' => 'AUTORIZACION'
                         ])->first();
 
+                        $informacionAdicional = 'Sin informacion adicional';
+                        if (isset($autorizacionNodo->autorizacion->mensajes->mensaje->informacionAdicional)) {
+                            $informacionAdicional = $autorizacionNodo->autorizacion->mensajes->mensaje->informacionAdicional;
+                        }
+
                         $datosAct = [
                             'identificador' => $identificador,
-                            "mensaje_error" => $identificador . ' => ' . $mensajeError->descripcion,
+                            "mensaje_error" => $mensajeError->descripcion . " (" . $informacionAdicional . ")",
                         ];
                         FacturaElectronica::where(['clave_acceso' => $recibido['clave_acceso']])->update($datosAct);
                     }

@@ -40,6 +40,7 @@ class TipoErroresSeeder extends Seeder
             ['identificador' => 63, 'descripcion' => 'RUC clausurado. Cuando el RUC del emisor se encuentra clausurado por procesos de control de la Administración Tributaria.', 'tipo' => 'AUTORIZACION'],
             ['identificador' => 65, 'descripcion' => 'Fecha de emisión extemporánea. Cuando el comprobante emitido no fue enviado de acuerdo con el tiempo del tipo de emisión en el cual fue realizado.', 'tipo' => 'RECEPCION'],
             ['identificador' => 67, 'descripcion' => 'Fecha Invalida. Cuando existe errores en el formato de la fecha.', 'tipo' => 'RECEPCION'],
+            ['identificador' => 69, 'descripcion' => 'Error en la identificacion del receptor.', 'tipo' => 'AUTORIZACION'],
             ['identificador' => 70, 'descripcion' => 'Clave de acceso en procesamiento. Cuando se desea enviar un comprobante que ha sido enviado anteriormente y el mismo no ha terminado su procesamiento.', 'tipo' => 'RECEPCION'],
             ['identificador' => 80, 'descripcion' => 'Error en la estructura de clave acceso. Cuando se ejecuta la consulta de autorización por clave de acceso y el valor de este parámetro supera los 49 dígitos, tiene caracteres alfanuméricos o cuando el tag (claveAccesoComprobante) está vacío.', 'tipo' => 'AUTORIZACION'],
             ['identificador' => 82, 'descripcion' => 'Error en la fecha de inicio de transporte. Cuando la fecha de inicio de transporte es menor a la fecha de emisión de la guía de remisión.', 'tipo' => 'RECEPCION'],
