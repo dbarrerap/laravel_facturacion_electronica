@@ -5,7 +5,7 @@ y reglamentarios exigibles para todos los comprobantes de venta, garantizando la
 autenticidad de su origen y la integridad de su contenido y que se emite a través de
 una nueva modalidad electrónica autorizada por el Servicio de Rentas Internas.
 
-Esta aplicacion es un complemento para (Stock Manager Advance)[https://tecdiary.net/products/stock-manager-advance-with-all-modules], una aplicacion para manejo de inventario y facturacion.
+Esta aplicacion es un complemento para [Stock Manager Advance](https://tecdiary.net/products/stock-manager-advance-with-all-modules), una aplicacion para manejo de inventario y facturacion.
 
 ## Requerimientos
 
