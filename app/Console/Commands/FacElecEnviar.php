@@ -31,7 +31,7 @@ class FacElecEnviar extends Command
      */
     public function handle()
     {
-        $firmados = FacturaElectronica::where('estado', '=', 'F')->get();
+        $firmados = FacturaElectronica::where('estado', '=', 'F')->whereNull('identificador')->get();
         $bar = $this->output->createProgressBar(count($firmados));
 
         foreach ($firmados as $firmado) {
