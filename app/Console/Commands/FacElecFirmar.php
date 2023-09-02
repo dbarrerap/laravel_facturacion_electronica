@@ -34,8 +34,33 @@ class FacElecFirmar extends Command
         $bar = $this->output->createProgressBar(count($documentos));
         foreach($documentos as $documento) {
             try {
-                $url = "java -jar " . storage_path('app/firmador/FirmaElectronica.jar') . " " . storage_path('app/firmador/certificado.p12') . " " . env('CLAVE_CERTIFICADO') . " " . storage_path('app/comprobantes/generados/') . $documento['clave_acceso'] . ".xml " . storage_path('app/comprobantes/firmados/') . " " . $documento['clave_acceso'] . ".xml";
-                exec($url, $o);
+                $firmador = storage_path('app/firmador/FirmaElectronica.jar');
+                $cerificado = storage_path('app/firmador/certificado.p12');
+                $clave_certificado = env('CLAVE_CERTIFICADO');
+                $documento = storage_path('app/comprobantes/generados/' . $documento['clave_acceso'] . ".xml ");
+                $output_path = storage_path('app/comprobantes/firmados/');
+                $output_file = $documento['clave_acceso'] . ".xml";
+
+                if (!isset($firmador)) {
+                    $mensaje = 'No se ha encontrado el firmador.';
+                    Log::warning($mensaje);
+                    throw new \Exception($mensaje);
+                }
+
+                if (!isset($cerificado)) {
+                    $mensaje = 'No se ha encontrado el certificado.';
+                    Log::warning($mensaje);
+                    throw new \Exception($mensaje);
+                }
+
+                if (!isset($clave_certificado)) {
+                    $mensaje = 'No se ha configurado la clave del certificado.';
+                    Log::warning($mensaje);
+                    throw new \Exception($mensaje);
+                }
+
+                $command = "java -jar " . $firmador . " " . $cerificado . " " . env('CLAVE_CERTIFICADO') . " " . $documento . " " . $output_path . " " . $output_file;
+                exec($command, $o);
 
                 foreach($o as $line) {
                     Log::info($line);

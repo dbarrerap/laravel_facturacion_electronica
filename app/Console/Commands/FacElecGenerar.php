@@ -7,6 +7,7 @@ use App\Models\Factura;
 use App\Models\FacturaElectronica;
 use DOMDocument;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class FacElecGenerar extends Command
 {
@@ -44,16 +45,20 @@ class FacElecGenerar extends Command
 
         foreach($facturas as $factura){
             try {
-                if (!isset($factura['documento']['cliente']['cf1'])) {
+                if (!isset($factura['documento']['cliente']['cf1']) || empty($factura['documento']['cliente']['cf1'])) {
+                    Log::warning("Cliente no tiene tipo de identificacion configurada.", ['cliente' => $factura['documento']['cliente']]);
                     throw new \Exception('Cliente no tiene un tipo de identificacion asociado');
                 }
-                if (!isset($factura['documento']['cliente']['cf2'])) {
+                if (!isset($factura['documento']['cliente']['cf2']) || empty($factura['documento']['cliente']['cf2'])) {
+                    Log::warning("Cliente no tiene numero de identificacion configurado.", ['cliente' => $factura['documento']['cliente']]);
                     throw new \Exception('Cliente no tiene un numero de documento de identificacion asociado');
                 }
-                if (isset($factura['documento']['cliente']['cf1']) == 'Cedula' && strlen(isset($factura['documento']['cliente']['cf2']) != 10)) {
+                if ($factura['documento']['cliente']['cf1'] == 'Cedula' && strlen($factura['documento']['cliente']['cf2']) != 10) {
+                    Log::warning('Longitud de Cedula no es la correcta.', ['cliente' => $factura['documento']['cliente']]);
                     throw new \Exception('Longitud de Cedula invalida');
                 }
-                if (isset($factura['documento']['cliente']['cf1']) == 'Ruc' && strlen(isset($factura['documento']['cliente']['cf2']) != 13)) {
+                if ($factura['documento']['cliente']['cf1'] == 'Ruc' && strlen($factura['documento']['cliente']['cf2']) != 13) {
+                    Log::warning('Longitud de RUC no es el correcto.', ['cliente' => $factura['documento']['cliente']]);
                     throw new \Exception('Longitud de RUC invalida');
                 }
 
