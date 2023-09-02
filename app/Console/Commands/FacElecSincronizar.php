@@ -31,7 +31,10 @@ class FacElecSincronizar extends Command
     public function handle()
     {
         $empresa = Empresa::where('id', 1)->first();
-        $facturas_qb = Factura::with('pos_settings')->where('note', '');
+        $facturas_qb = Factura::with('pos_settings')->where(function ($query) {
+            $query->where('note', '')
+                ->orWhereNull('note');
+        });
         $facturas = $facturas_qb->get();
 
         $bar = $this->output->createProgressBar(count($facturas));
@@ -44,7 +47,7 @@ class FacElecSincronizar extends Command
             $claveAcceso .= '1'; // Tipo de Ambiente: 1 Desarrollo, 2 Produccion -- 1 de longitud
             $claveAcceso .= str_pad($factura['pos_settings']['cf_value1'], 3, '0', STR_PAD_LEFT);  // Establecimiento -- 3 de longitud
             $claveAcceso .= str_pad($factura['pos_settings']['cf_value2'], 3, '0', STR_PAD_LEFT);  // Punto Emision -- 3 de longitud
-            $claveAcceso .= str_pad($secuencial[3], 9, '0', STR_PAD_LEFT);  // Secuencial -- 9 de longitud
+            $claveAcceso .= str_pad($secuencial[count($secuencial) - 1], 9, '0', STR_PAD_LEFT);  // Secuencial -- 9 de longitud
             $claveAcceso .= '12345678'; //Codigo Numerico: segun la ficha tecnica del sri por defecto es 12345678 --- 8 de longitud
             $claveAcceso .= '1'; //Tipo Emision: segun la ficha tecnica del sri el codigo por defecto es 1 --- 1 de longitud
             $claveAcceso .= $this->getMod11Dv($claveAcceso);
@@ -63,7 +66,7 @@ class FacElecSincronizar extends Command
         }
         $bar->finish();
         $facturas_qb->update(['note' => 'FacElec Generado']);
-        
+
         return Command::SUCCESS;
     }
 

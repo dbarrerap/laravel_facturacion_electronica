@@ -38,6 +38,7 @@ class FacElecGenerar extends Command
             'documento.detalles',
             'documento.payment',
         ])
+        ->where('estado', 'E')
         ->get();
         $bar = $this->output->createProgressBar(count($facturas));
 
@@ -210,7 +211,7 @@ class FacElecGenerar extends Command
                 FacturaElectronica::where('id', $factura['id'])->update($datosAct);
             } catch (\Exception $ex) {
                 $datosAct = [
-                    'mensaje_error' => 'GenerarXML: Error al generar al generar XML (' . $ex->getMessage() . ')',
+                    'mensaje_error' => 'GenerarXML: Error al generar XML (' . $ex->getMessage() . ')',
                 ];
                 $this->error($factura['clave_acceso'] . ': ' . $ex->getMessage());
                 FacturaElectronica::where('id', $factura['id'])->update($datosAct);
