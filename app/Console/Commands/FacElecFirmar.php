@@ -37,7 +37,7 @@ class FacElecFirmar extends Command
                 $firmador = storage_path('app/firmador/FirmaElectronica.jar');
                 $cerificado = storage_path('app/firmador/certificado.p12');
                 $clave_certificado = env('CLAVE_CERTIFICADO');
-                $documento = storage_path('app/comprobantes/generados/' . $documento['clave_acceso'] . ".xml ");
+                $input_file = storage_path('app/comprobantes/generados/' . $documento['clave_acceso'] . ".xml ");
                 $output_path = storage_path('app/comprobantes/firmados/');
                 $output_file = $documento['clave_acceso'] . ".xml";
 
@@ -59,7 +59,7 @@ class FacElecFirmar extends Command
                     throw new \Exception($mensaje);
                 }
 
-                $command = "java -jar " . $firmador . " " . $cerificado . " " . env('CLAVE_CERTIFICADO') . " " . $documento . " " . $output_path . " " . $output_file;
+                $command = "java -jar " . $firmador . " " . $cerificado . " " . env('CLAVE_CERTIFICADO') . " " . $input_file . " " . $output_path . " " . $output_file;
                 exec($command, $o);
 
                 foreach($o as $line) {
