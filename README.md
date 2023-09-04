@@ -17,11 +17,12 @@ Esta aplicacion es un complemento para [Stock Manager Advance](https://tecdiary.
 1. Instalar las dependencias del proyecto `composer install`
 1. Generar el archivo env `cp .env.example .env`
 1. Generar la clave del programa `php artisan key:generate`
+1. Ingresar las credenciales de la base de datos en las variables `DB_*`
 1. Migrar las tablas para la generacion de Documentos Electronicos `php artisan migrate`
 1. Cargar los datos iniciales para manejo de errores `php artisan db:seed --class TipoErroresSeeder`
-1. [Descargar](https://github.com/jordiicabrera/FirmaSriJava) el firmador. Copiar el JAR y la carpeta lib (ubicados en la carpeta dist) en la carpeta `storage/app/firmador`. (Requiere JRE 11)
-1. Ubicar el certificado p12 junto al JAR, con el nombre `certificado.p12`.
-1. Escribir la clave del certificado en el archivo `.env` en la variable `CLAVE_CERTIFICADO`
+1. [Descargar](https://github.com/jordiicabrera/FirmaSriJava) el firmador. Copiar el JAR y la carpeta lib (ubicados en la carpeta dist) en la carpeta `storage/app/firmador`. (Requiere JRE 8 u 11)
+1. Ubicar el certificado p12 junto al JAR del punto anterior.
+1. Configurar el nombre del certificado y su clave respectiva en las variables `NOMBRE_CERTIFICADO` y `CLAVE_CERTIFICADO`.
 1. Agregar la tarea cron `* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1` para la ejecucion de comandos.
 
 ## Comprobantes Electronicos

@@ -8,6 +8,7 @@ use App\Models\FacturaElectronica;
 use DOMDocument;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class FacElecGenerar extends Command
 {
@@ -53,11 +54,11 @@ class FacElecGenerar extends Command
                     Log::warning("Cliente no tiene numero de identificacion configurado.", ['cliente' => $factura['documento']['cliente']]);
                     throw new \Exception('Cliente no tiene un numero de documento de identificacion asociado');
                 }
-                if ($factura['documento']['cliente']['cf1'] == 'Cedula' && strlen($factura['documento']['cliente']['cf2']) != 10) {
+                if (Str::lower($factura['documento']['cliente']['cf1']) == 'cedula' && strlen($factura['documento']['cliente']['cf2']) != 10) {
                     Log::warning('Longitud de Cedula no es la correcta.', ['cliente' => $factura['documento']['cliente']]);
                     throw new \Exception('Longitud de Cedula invalida');
                 }
-                if ($factura['documento']['cliente']['cf1'] == 'Ruc' && strlen($factura['documento']['cliente']['cf2']) != 13) {
+                if (Str::lower($factura['documento']['cliente']['cf1']) == 'ruc' && strlen($factura['documento']['cliente']['cf2']) != 13) {
                     Log::warning('Longitud de RUC no es el correcto.', ['cliente' => $factura['documento']['cliente']]);
                     throw new \Exception('Longitud de RUC invalida');
                 }
@@ -108,11 +109,11 @@ class FacElecGenerar extends Command
                 $cbc = $infoFactura->appendChild($cbc);
 
                 $tipoIdentificacion = "07";
-                if ($factura['documento']['cliente']['cf1'] == "Ruc") {
+                if (Str::lower($factura['documento']['cliente']['cf1']) == "ruc") {
                     $tipoIdentificacion = "04";
-                } else if ($factura['documento']['cliente']['cf1'] == "Cedula") {
+                } else if (Str::lower($factura['documento']['cliente']['cf1']) == "cedula") {
                     $tipoIdentificacion = "05";
-                } else if ($factura['documento']['cliente']['cf1'] == "Pasaporte") {
+                } else if (Str::lower($factura['documento']['cliente']['cf1']) == "pasaporte") {
                     $tipoIdentificacion = "06";
                 }
                 $cbc = $xml->createElement('tipoIdentificacionComprador', $tipoIdentificacion); //ver ficha tecnica SRI tabla 6

@@ -35,31 +35,32 @@ class FacElecFirmar extends Command
         foreach($documentos as $documento) {
             try {
                 $firmador = storage_path('app/firmador/FirmaElectronica.jar');
-                $cerificado = storage_path('app/firmador/certificado.p12');
-                $clave_certificado = env('CLAVE_CERTIFICADO');
-                $input_file = storage_path('app/comprobantes/generados/' . $documento['clave_acceso'] . ".xml ");
-                $output_path = storage_path('app/comprobantes/firmados/');
-                $output_file = $documento['clave_acceso'] . ".xml";
-
-                if (!isset($firmador)) {
+                if (!isset($firmador) || empty($firmador)) {
                     $mensaje = 'No se ha encontrado el firmador.';
                     Log::warning($mensaje);
                     throw new \Exception($mensaje);
                 }
 
-                if (!isset($cerificado)) {
-                    $mensaje = 'No se ha encontrado el certificado.';
+                $nombre_certificado = env('NOMBRE_CERTIFICADO');
+                if (!isset($nombre_certificado)) {
+                    $mensaje = 'No se ha configurado el nombre del certificado.';
                     Log::warning($mensaje);
                     throw new \Exception($mensaje);
                 }
 
+                $cerificado = storage_path('app/firmador/' . $nombre_certificado);
+                $clave_certificado = env('CLAVE_CERTIFICADO');
                 if (!isset($clave_certificado)) {
                     $mensaje = 'No se ha configurado la clave del certificado.';
                     Log::warning($mensaje);
                     throw new \Exception($mensaje);
                 }
 
-                $command = "java -jar " . $firmador . " " . $cerificado . " " . env('CLAVE_CERTIFICADO') . " " . $input_file . " " . $output_path . " " . $output_file;
+                $input_file = storage_path('app/comprobantes/generados/' . $documento['clave_acceso'] . ".xml ");
+                $output_path = storage_path('app/comprobantes/firmados/');
+                $output_file = $documento['clave_acceso'] . ".xml";
+
+                $command = 'java -jar ' . $firmador . ' "' . $cerificado . '" ' . $clave_certificado . ' ' . $input_file . ' ' . $output_path . ' '. $output_file;
                 exec($command, $o);
 
                 foreach($o as $line) {

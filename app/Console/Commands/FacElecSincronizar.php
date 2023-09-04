@@ -31,11 +31,11 @@ class FacElecSincronizar extends Command
     public function handle()
     {
         $empresa = Empresa::where('id', 1)->first();
-        $facturas_qb = Factura::with('pos_settings')->where(function ($query) {
+        $facturas = Factura::with('pos_settings')->where(function ($query) {
             $query->where('note', '')
                 ->orWhereNull('note');
-        });
-        $facturas = $facturas_qb->get();
+        })
+        ->get();
 
         $bar = $this->output->createProgressBar(count($facturas));
 
@@ -62,10 +62,11 @@ class FacElecSincronizar extends Command
             $fe->clave_acceso = $claveAcceso;
             $fe->save();
 
+            Factura::where('id', $factura['id'])->update(['note' => 'FacElec Generado']);
+
             $bar->advance();
         }
         $bar->finish();
-        $facturas_qb->update(['note' => 'FacElec Generado']);
 
         return Command::SUCCESS;
     }
