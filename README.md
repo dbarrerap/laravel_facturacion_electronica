@@ -16,6 +16,9 @@ Esta aplicacion es un complemento para [Stock Manager Advance](https://tecdiary.
 ## Instalacion
 
 1. Instalar las dependencias del proyecto `composer install`
+1. Configurar los permisos de la carpeta _storage_ y _bootstrap/cache_
+    * `sudo chgrp -R www-data storage bootstrap/cache`
+    * `sudo chmod -R ug+rwx storage bootstrap/cache`
 1. Generar el archivo env `cp .env.example .env`
 1. Generar la clave del programa `php artisan key:generate`
 1. Ingresar las credenciales de la base de datos en las variables `DB_*`
