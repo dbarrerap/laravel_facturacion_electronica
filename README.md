@@ -11,6 +11,7 @@ Esta aplicacion es un complemento para [Stock Manager Advance](https://tecdiary.
 
 * PHP 8.0+ (ext: php-soap)
 * composer 2+
+* Java JRE 8 (Para Firmado de XML y Generacion de PDF RIDE)
 
 ## Instalacion
 
@@ -20,8 +21,9 @@ Esta aplicacion es un complemento para [Stock Manager Advance](https://tecdiary.
 1. Ingresar las credenciales de la base de datos en las variables `DB_*`
 1. Migrar las tablas para la generacion de Documentos Electronicos `php artisan migrate`
 1. Cargar los datos iniciales para manejo de errores `php artisan db:seed --class TipoErroresSeeder`
-1. Configurar los datos de la Empresa `php artisan facelec:config`
-1. [Descargar](https://github.com/jordiicabrera/FirmaSriJava) el firmador. Copiar el JAR y la carpeta lib (ubicados en la carpeta dist) en la carpeta `storage/app/firmador`. (Requiere JRE 8 u 11)
+1. Configurar los datos de la Empresa `php artisan facelec:config` (Esto se realiza una sola vez)
+    * **ATENCION:** El logo de la empresa debe ser convertido a base64 y almacenado en el campo `logo_empresa` de manera manual.
+1. [Descargar](https://github.com/jordiicabrera/FirmaSriJava) el firmador. Copiar el JAR y la carpeta lib (ubicados en la carpeta dist) en la carpeta `storage/app/firmador`.
 1. Ubicar el certificado p12 junto al JAR del punto anterior.
 1. Configurar el nombre del certificado y su clave respectiva en las variables `NOMBRE_CERTIFICADO` y `CLAVE_CERTIFICADO`.
 1. Agregar la tarea cron `* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1` para la ejecucion automatica de comandos.
