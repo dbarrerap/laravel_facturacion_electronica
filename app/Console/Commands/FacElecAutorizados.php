@@ -106,6 +106,8 @@ class FacElecAutorizados extends Command
                             'mensaje_error' => null,
                         ];
                         FacturaElectronica::where(['clave_acceso' => $recibido['clave_acceso']])->update($datosAct);
+
+                        $this->call('jreport:generar', ['numero' => $recibido['id'], 'clave' => $recibido['clave_acceso']]);
                     } else {
                         $identificador = $autorizacionNodo->autorizacion->mensajes->mensaje->identificador;
 

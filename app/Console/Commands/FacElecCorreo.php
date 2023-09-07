@@ -50,7 +50,7 @@ class FacElecCorreo extends Command
                     $autorizado['documento']['grand_total'],
                     $autorizado['documento']['cliente']['cf2'],
                     $autorizado['documento']['cliente']['name'],
-                    [$autorizado['clave_acceso'] . '.xml'],
+                    [$autorizado['clave_acceso'] . '.xml', $autorizado['clave_acceso'] . '.pdf'],
                     $autorizado['clave_acceso']
                 ));
 
