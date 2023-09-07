@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('fe_clave', 250)->nullable();
             $table->string('obligado_contabilidad')->default('NO');
             $table->string('estado', 2)->default('A');
+            $table->text('logo_empresa')->comment('Logo de Empresa en Base64')->nullable();
             $table->timestamps();
         });
     }
